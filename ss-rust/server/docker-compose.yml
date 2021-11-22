@@ -1,5 +1,5 @@
 services:
-  kcptun-server:
+  kcptun:
     command: ["/bin/server", "-c", "/etc/kcptun.json"]
     image: docker.io/xtaci/kcptun:${KCPTUN_VERSION}
     ports:
@@ -9,11 +9,12 @@ services:
     volumes:
       - "./kcptun-server.json:/etc/kcptun.json"
 
-  ssserver-rust:
+  ssserver:
     image: ghcr.io/shadowsocks/ssserver-rust:${SHADOWSOCKS_RUST_VERSION}
     ports:
       - "${SHADOWSOCK_PORT}:8388/tcp"
       - "${SHADOWSOCK_PORT}:8388/udp"
     restart: always
     volumes:
-      - "./ssserver-rust.json:/etc/shadowsocks-rust/config.json"
+      - "./ssserver.json:/etc/shadowsocks-rust/config.json"
+      - "./v2ray-plugin:/usr/local/bin/v2ray-plugin"

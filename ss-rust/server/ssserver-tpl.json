@@ -1,0 +1,22 @@
+{
+  "servers": [
+    {
+      "method": "aes-256-gcm",
+      "mode": "tcp_and_udp",
+      "password": "$SHADOWSOCK_PASSWORD",
+      "server": "0.0.0.0",
+      "server_port": 8387,
+      "timeout": 300
+    },
+    {
+      "method": "aes-256-gcm",
+      "mode": "tcp_and_udp",
+      "password": "$SHADOWSOCK_PASSWORD",
+      "plugin": "v2ray-plugin",
+      "plugin-opts": "server",
+      "server": "0.0.0.0",
+      "server_port": 8388,
+      "timeout": 300
+    }
+  ]
+}

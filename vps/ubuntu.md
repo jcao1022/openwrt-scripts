@@ -6,11 +6,11 @@ timedatectl set-timezone UTC
 # Make sudo work without warning
 echo $(hostname -I) $(hostname)  | tee -a /etc/hosts
 
-apt-get update -qq -y
-# apt-get upgrade -qq -y -o "Dpkg::Use-Pty=0"
-apt-get install -qq -y -o "Dpkg::Use-Pty=0" software-properties-common # for ppa
+apt-get -qq -y update
+apt-get -qq -y -o "Dpkg::Use-Pty=0" install software-properties-common # for ppa
 
 export APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=yes
+export DEBIAN_FRONTEND=noninteractive
 VERSION=$(echo "$(lsb_release -r | cut -d':' -f2 | tr -d '[:space:]') * 100 / 1" | bc)
 declare -a ppa_repos
 if [[ ${VERSION} -eq 1804 ]]; then
@@ -31,9 +31,10 @@ elif [[ ${VERSION} -eq 2004 ]]; then
     ppa_repos+=(ppa:deadsnakes/ppa ppa:mtvoid/ppa ppa:mjuhasz/backports ppa:pypy/ppa ppa:jonathonf/vim)
     for ppa in "${ppa_repos[@]}"; do add-apt-repository -y "$ppa"; done
 fi
-sudo apt update -qq
+apt-get -qq -y update
+apt-get -qq -y -o "Dpkg::Use-Pty=0" upgrade
 
-apt-get install -qq -y -o "Dpkg::Use-Pty=0" certbot curl docker.io fish git gnupg jq moreutils nmon nano python3-distutils screen sshpass tig tmux vim
+apt-get -qq -y -o "Dpkg::Use-Pty=0" install certbot curl docker.io fish git gnupg jq moreutils nmon nano python3-distutils screen sshpass tig tmux vim
 
 mkdir ~/.ssh
 chmod 700 ~/.ssh
@@ -42,9 +43,9 @@ chmod 600 ~/.ssh/authorized_keys
 
 # https://unix.stackexchange.com/questions/130786/can-i-remove-files-in-var-log-journal-and-var-cache-abrt-di-usr
 echo "SystemMaxUse=100M" | sudo tee -a /etc/systemd/journald.conf
-sudo systemctl daemon-reload
-sudo systemctl restart systemd-journald.service
-sudo journalctl --disk-usage
+systemctl daemon-reload
+systemctl restart systemd-journald.service
+journalctl --disk-usage
 
 # create normal user
 SUDO_USER=

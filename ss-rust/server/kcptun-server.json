@@ -16,5 +16,5 @@
   "resend": 0,
   "sndwnd": 1024,
   "sockbuf": 8388608,
-  "target": "ssserver-rust:8388"
+  "target": "ssserver-rust:8387"
 }
